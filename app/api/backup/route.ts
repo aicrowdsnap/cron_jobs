@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { runDatabaseBackup } from '@/scripts/db-backup';
 
 export const runtime = 'nodejs';
-export const maxDuration = 1500;
+export const maxDuration = 300;
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization');
