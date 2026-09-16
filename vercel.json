@@ -2,12 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "crons": [
     {
-      "path": "/api/alumex",
-      "schedule": "30 2,10,18 * * *"
-    },
-    {
-      "path": "/api/grouped-jobs",
-      "schedule": "30 7,10,12,13,18 * * *"
+      "path": "/api/alumex_backup",
+      "schedule": "30 18 * * *"
     }
   ]
 }
