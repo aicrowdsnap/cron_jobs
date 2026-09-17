@@ -17,7 +17,6 @@ export async function GET(request: Request) {
       error: 'Server configuration error.' 
     }, { status: 500 });
   }
-console.log('[API] Received backup request.Auth Header:', authHeader, 'Expected Secret:', backupSecret);
   if (authHeader !== `${backupSecret}`) {
     console.warn('[API] Blocked unauthorized backup attempt.');
     return NextResponse.json({ 
