@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/api/backup",
-      "schedule": "30 18 * * *"
+      "schedule": "45 4 * * *"
     }
   ]
 }
