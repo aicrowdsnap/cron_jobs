@@ -3,6 +3,7 @@ import * as os from 'os';
 import * as path from 'path';
 import mysql from 'mysql2/promise';
 import { uploadBackupToGoogleDrive } from '../lib/services/googleDriveService';
+import { sendNotificationEmail } from '../lib/services/emailService';
 
 export async function runDatabaseBackup() {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -65,10 +66,29 @@ export async function runDatabaseBackup() {
     const driveUrl = await uploadBackupToGoogleDrive(tempFilePath, filename);
     console.log(`[Backup] Process completed! Backup uploaded to Google Drive`);
 
+    const successMessage = `
+      <h3>✅ Database Backup Successful</h3>
+      <p><strong>File:</strong> ${filename}</p>
+      <p><strong>Size:</strong> ${fileSizeMB} MB</p>
+      <p><strong>Time:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'Asia/Colombo' })}</p>
+      <br>
+      <a href="${driveUrl}">Download Backup from Google Drive</a>
+    `;
+    await sendNotificationEmail(`✅ Database Backup: ${process.env.DB_NAME}`, successMessage);
+
     return { success: true, url: driveUrl, sizeMB: fileSizeMB };
 
   } catch (error: any) {
     console.error(`[Backup] Failed during backup process:`, error);
+    
+    const errorMessage = `
+      <h3>❌ Database Backup Failed</h3>
+      <p><strong>Time:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'Asia/Colombo' })}</p>
+      <p><strong>Error Details:</strong></p>
+      <pre>${error?.message || 'Unknown execution error'}</pre>
+    `;
+    await sendNotificationEmail(`❌ Backup Failed: ${process.env.DB_NAME}`, errorMessage);
+
     throw error;
   } finally {
     if (connection) {

@@ -13,11 +13,13 @@
     "googleapis": "^144.0.0",
     "mysql2": "^3.24.4",
     "next": "latest",
+    "nodemailer": "^10.0.10",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/nodemailer": "^8.0.2",
     "@types/react": "latest",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
