@@ -25,7 +25,7 @@ export async function uploadBackupToGoogleDrive(
   };
 
   const media = {
-    mimeType: 'application/x-sql',
+    mimeType: 'application/zip',
     body: fs.createReadStream(filePath),
   };
 
