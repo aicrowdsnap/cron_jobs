@@ -29,10 +29,33 @@ export async function GET(request: Request) {
     console.log('[API] Triggering database backup...');
     const result = await runDatabaseBackup();
     
+    // Call HR app backup endpoint
+    console.log('[API] Calling HR app backup endpoint...');
+    const hrSecret = process.env.CRON_SECRET;
+    const hrAppUrl = process.env.HR_APP_URL;
+    
+    const hrResponse = await fetch(`${hrAppUrl}/api/backup`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${hrSecret}`
+      }
+    });
+    
+    const hrResult = await hrResponse.json();
+    
+    if (!hrResponse.ok) {
+      console.error('[API] HR app backup failed:', hrResult);
+    } else {
+      console.log('[API] HR app backup completed successfully');
+    }
+    
     return NextResponse.json({ 
       success: true, 
       message: 'Database backup completed and uploaded successfully.',
-      data: result
+      data: {
+        dbBackup: result,
+        hrBackup: hrResult
+      }
     }, { status: 200 });
     
   } catch (error: any) {
