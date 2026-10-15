@@ -37,7 +37,7 @@ export async function GET(request: Request) {
     const hrResponse = await fetch(`${hrAppUrl}/api/backup`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${hrSecret}`
+        'Authorization': `${hrSecret}`
       }
     });
     
